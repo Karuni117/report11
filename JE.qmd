@@ -1,0 +1,109 @@
+---
+title: "Japan_Expenditure"
+format: html
+author: Kawano Kazuki 
+date: last-modified
+---
+
+#### 概要
+
+日本国の歳出を可視化することで、政治に関して考える材料とすること。
+
+#### データ収集
+
+データは、財務省の決算書の情報よりcsv版より収集し2019年度から2024年度までのデータを用いた。
+
+#### 資料
+財務省 https://www.bb.mof.go.jp/hdocs/bxss010br6.html
+
+[令和元年度](https://www.bb.mof.go.jp/server/2019/csv/DL201911001.zip)
+[令和2年度](https://www.bb.mof.go.jp/server/2020/csv/DL202011001.zip)
+[令和3年度](https://www.bb.mof.go.jp/server/2021/csv/DL202111001.zip)
+[令和4年度](https://www.bb.mof.go.jp/server/2022/csv/DL202211001.zip)
+[令和5年度](https://www.bb.mof.go.jp/server/2023/csv/DL202311001.zip)
+[令和6年度](https://www.bb.mof.go.jp/server/2024/csv/DL202411001.zip)
+
+
+#### データ処理
+
+csvデータから所管、項名、要求額、前年度比増減額を抽出し、1兆円越えの費用の一覧を表示した。
+
+```{r, message = FALSE}
+library(tidyverse)
+library(gt)
+#財務省予算書の情報当初予算CSV版(B)
+CSV_2019 <- read_csv("DL201911001b.csv")
+CSV_2020 <- read_csv("DL202011001b.csv")
+CSV_2021 <- read_csv("DL202111001b.csv")
+CSV_2022 <- read_csv("DL202211001b.csv")
+CSV_2023 <- read_csv("DL202311001b.csv")
+CSV_2024 <- read_csv("DL202411001b.csv")
+```
+
+```{r}
+#所管、項名、目名、要求額、前年度比増減額をセレクト
+Data_2019 <- CSV_2019 %>%
+  select(1,10,11,12,14)
+Data_2020 <- CSV_2020 %>%
+  select(1,10,11,12,14)
+Data_2021 <- CSV_2021 %>%
+  select(1,10,11,12,14)
+Data_2022 <- CSV_2022 %>%
+  select(1,10,11,12,14)
+Data_2023 <- CSV_2023 %>%
+  select(1,10,11,12,14)
+Data_2024 <- CSV_2024 %>%
+  select(1,10,11,12,14)
+```
+
+```{r}
+# 1兆円以上の費用
+trillion_2019 <- Data_2019 [Data_2019$`平成31年度要求額(千円)`    >=1000000000,]
+trillion_2020 <- Data_2020 [Data_2020$`令和2年度要求額(千円)`     >=1000000000,] 
+trillion_2021 <- Data_2021 [Data_2021$`令和3年度要求額(千円)`     >=1000000000,] 
+trillion_2022 <- Data_2022 [Data_2022$`令和4年度要求額(千円)`     >=1000000000,]
+trillion_2023 <- Data_2023 [Data_2023$`令和5年度要求額(千円)`     >=1000000000,]
+trillion_2024 <- Data_2024 [Data_2024$令和6年度要求額             >=1000000000,]
+```
+
+#### 2019年度1兆円越え費用一覧
+
+```{r}
+trillion_2019  |>
+  gt()
+```
+
+#### 2020年度1兆円越え費用一覧
+
+```{r}
+trillion_2020  |>
+  gt()
+```
+
+#### 2021年度1兆円越え費用一覧
+
+```{r}
+trillion_2021  |>
+  gt()
+```
+
+#### 2022年度1兆円越え費用一覧
+
+```{r}
+trillion_2022  |>
+  gt()
+```
+
+#### 2023年度1兆円越え費用一覧
+
+```{r}
+trillion_2023  |>
+  gt()
+```
+
+#### 2024年度1兆円越え費用一覧
+
+```{r}
+trillion_2024  |>
+  gt()
+```

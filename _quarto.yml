@@ -1,0 +1,24 @@
+project:
+  type: website
+  output-dir: docs
+
+website:
+  title: "Report"
+  navbar:
+    left:
+      - text: "Home"
+        href: about.qmd
+      - text: "Analysis Results"
+        href: index.qmd
+  sidebar:
+    left:
+    style: "docked"
+    collapse-level: 1
+    search: true
+    contents:
+      - section: "Analysis Result"  
+        contents: 
+            - text: "日本歳出"
+              href: JE.qmd
+            - text: "省庁の費用"
+              href: ME.qmd   
